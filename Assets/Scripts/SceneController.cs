@@ -8,11 +8,10 @@ public class SceneController : MonoBehaviour
     [SerializeField] private Transform cardSpawnPoint;
 
     [SerializeField] private Sprite[] cardImages;
-
     private List<Card> cards;
 
-    private Card card1;
-    private Card card2;
+    Card card1 = null;
+    Card card2 = null;
     private int score = 0;
 
     private void Awake()
@@ -24,6 +23,7 @@ public class SceneController : MonoBehaviour
     {
         Messenger<Card>.RemoveListener(GameEvent.CARD_CLICKED, this.OnCardClicked);
     }
+
     private void Start()
     {
         //Card card = CreateCard(cardSpawnPoint.position);
@@ -32,11 +32,12 @@ public class SceneController : MonoBehaviour
         cards = CreateCards();
         AssignImagesToCards();
 
-        foreach(Card card in cards)
+        foreach (Card card in cards)
         {
             card.SetFaceVisible(false);
         }
     }
+
     Card CreateCard(Vector3 pos)
     {
         GameObject obj = Instantiate(cardPrefab, pos, cardPrefab.transform.rotation);
@@ -44,7 +45,46 @@ public class SceneController : MonoBehaviour
         return card;
     }
 
-   
+    public void OnCardClicked(Card card)
+    {
+        Debug.Log(this + ".OnCardClicked()");
+        if (card1 == null)
+        {
+            card1 = card;
+            card1.SetFaceVisible(true);
+        }
+        else if (card2 == null)
+        {
+            card2 = card;
+            card2.SetFaceVisible(true);
+            StartCoroutine(EvaluatePair());
+            
+        }
+        else
+        {
+            Debug.Log("ignoring click");
+        }
+    }
+    IEnumerator EvaluatePair()
+    {
+        if (card1.GetSprite() == card2.GetSprite())
+        {
+            Debug.Log("Match");
+            score++;
+        }
+        else
+        {
+            Debug.Log("Not a Match");
+
+            yield return new WaitForSeconds(1);
+
+            card1.SetFaceVisible(false);
+            card2.SetFaceVisible(false);
+        }
+        card1 = null;
+        card2 = null;
+    }
+
 
     // Create (and return) a List of cards organized in a grid layout
     private List<Card> CreateCards()
@@ -89,43 +129,7 @@ public class SceneController : MonoBehaviour
             cards[i].SetSprite(cardImages[imageIndex]); // set the image on the card
         }
     }
-    public void OnCardClicked(Card card)
-    {
-        Debug.Log(this + ".OnCardClicked()");
-        if(card1 == null)
-        {
-            card1 = card;
-            card1.SetFaceVisible(true);
-        }
-        else
-        {
-             if (card2 == null)
-            {
-                card2 = card;
-                card2.SetFaceVisible(true);
-                StartCoroutine(EvaluatePair());
-            }
-        }
-    }
-    IEnumerator EvaluatePair()
-    {
-        if(card1.GetSprite() == card2.GetSprite()) 
-        {
-            Debug.Log("Match");
-            score++;
-        }
-        else
-        {
-            Debug.Log("Not a Match");
-            
-            //yield return delay();
-
-            card1.SetFaceVisible(false);
-            card2.SetFaceVisible(false);
-        }
-        card1 = null;
-        card2 = null;
-    }
+   
 
 
 
