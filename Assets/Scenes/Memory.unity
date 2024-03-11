@@ -359,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72844b96fa05a3b4982adb5caa3b3f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 6151824833953673236, guid: 30c30096b20d99846979d81f15df2985, type: 3}
+  cardPrefab: {fileID: 6953887721459188500, guid: 7ad5463b23d6b274a8c598380f517d34, type: 3}
   cardSpawnPoint: {fileID: 1273026219}
   cardImages:
   - {fileID: 21300000, guid: e8f56b3ac02a0bc40aa071c3146575cd, type: 3}

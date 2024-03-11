@@ -34,7 +34,9 @@ public class Card : MonoBehaviour
 
     public void SetFaceVisible(bool faceVisible)
     {
+        Debug.Log("sfv:" + faceVisible);
         cardBack.SetActive(!faceVisible);
+        Debug.Log("card back active? " + cardBack.activeInHierarchy);
     }
 
     private void OnMouseDown()

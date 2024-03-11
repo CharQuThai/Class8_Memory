@@ -31,7 +31,7 @@ public class SceneController : MonoBehaviour
         //card.SetSprite(cardImages[imageIndex]);
         cards = CreateCards();
         AssignImagesToCards();
-
+        Debug.Log("cardcount:" + cards.Count);
         foreach (Card card in cards)
         {
             card.SetFaceVisible(false);
