@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SceneController : MonoBehaviour
 {
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardSpawnPoint;
-
+    [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] private Sprite[] cardImages;
     private List<Card> cards;
 
@@ -71,6 +72,7 @@ public class SceneController : MonoBehaviour
         {
             Debug.Log("Match");
             score++;
+            scoreText.text = score.ToString();
         }
         else
         {
@@ -121,6 +123,8 @@ public class SceneController : MonoBehaviour
         }
 
         //    // *** TODO: write code to shuffle the list of image indices
+        ShuffleCards(imageIndices);
+
 
         //    // Go through each card in the game and assign it an image based on the (shuffled) list of indices.
         for (int i = 0; i < cards.Count; i++)
@@ -129,8 +133,40 @@ public class SceneController : MonoBehaviour
             cards[i].SetSprite(cardImages[imageIndex]); // set the image on the card
         }
     }
-   
 
 
+    private void ShuffleCards(List<int> list)
+    {
+        System.Random rng = new System.Random();
+
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int r = rng.Next(n + 1);
+            int temp = list[r];
+            list[r] = list[n];
+            list[n] = temp;
+        }
+    }
+
+    public void OnResetButtonPressed()
+    {
+        Reset();
+    }
+
+    private void Reset()
+    {
+        score = 0;
+        card1 = null;
+        card2 = null;
+
+        foreach (Card card in cards) 
+        {
+            card.SetFaceVisible(false);
+        }
+
+        AssignImagesToCards();
+    }
 
 }

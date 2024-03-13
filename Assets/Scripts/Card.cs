@@ -41,7 +41,11 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //SetFaceVisible(true);
-        Messenger<Card>.Broadcast(GameEvent.CARD_CLICKED, this);
+        if (cardBack.activeSelf)
+        {
+            //SetFaceVisible(true);
+            Messenger<Card>.Broadcast(GameEvent.CARD_CLICKED, this);
+        }
+        
     }
 }
