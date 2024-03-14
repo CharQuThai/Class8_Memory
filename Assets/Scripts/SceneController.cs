@@ -86,7 +86,6 @@ public class SceneController : MonoBehaviour
             iTween.MoveTo(card1.gameObject, iTween.Hash("position", card2.transform.position, "time", 1.5f, "easetype", iTween.EaseType.easeInOutBack));
             iTween.MoveTo(card2.gameObject, iTween.Hash("position", card1.transform.position, "time", 1.5f, "easetype", iTween.EaseType.easeInOutBack));
 
-
             yield return new WaitForSeconds(1.5f);
 
             SetSortingLayer(card1.gameObject, "Foreground");
