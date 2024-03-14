@@ -15,6 +15,8 @@ public class SceneController : MonoBehaviour
     Card card2 = null;
     private int score = 0;
 
+    public string swapSortingLayerName = "Swap";
+
     private void Awake()
     {
         Messenger<Card>.AddListener(GameEvent.CARD_CLICKED, this.OnCardClicked);
@@ -78,10 +80,21 @@ public class SceneController : MonoBehaviour
         {
             Debug.Log("Not a Match");
 
-            yield return new WaitForSeconds(1);
+            SetSortingLayer(card1.gameObject, "Infront");
+            SetSortingLayer(card2.gameObject, "Infront");
+
+            iTween.MoveTo(card1.gameObject, iTween.Hash("position", card2.transform.position, "time", 1.5f, "easetype", iTween.EaseType.easeInOutBack));
+            iTween.MoveTo(card2.gameObject, iTween.Hash("position", card1.transform.position, "time", 1.5f, "easetype", iTween.EaseType.easeInOutBack));
+
+
+            yield return new WaitForSeconds(1.5f);
+
+            SetSortingLayer(card1.gameObject, "Foreground");
+            SetSortingLayer(card2.gameObject, "Foreground");
 
             card1.SetFaceVisible(false);
             card2.SetFaceVisible(false);
+            //MoveCards();
         }
         card1 = null;
         card2 = null;
@@ -167,6 +180,21 @@ public class SceneController : MonoBehaviour
         }
 
         AssignImagesToCards();
+        scoreText.text = "0";
     }
+
+    void SetSortingLayer(GameObject obj, string sortingLayerName)
+    {
+        SpriteRenderer spriteRenderer = obj.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingLayerName = sortingLayerName;
+        }
+    }
+
+    //void MoveCards()
+    //{
+    //    iTween.MoveTo(this.gameObject, iTween.Hash("position", card2, "time", 2.5f, "easetype", iTween.EaseType.easeInOutSine));
+    //}
 
 }
